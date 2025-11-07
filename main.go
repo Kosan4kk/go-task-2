@@ -76,11 +76,13 @@ func main() {
 							}
 						}
 						
-						// 4. Network bandwidth
+						// 4. Network bandwidth - исправленный расчёт
 						if totalNet > 0 {
 							netUsagePercent := float64(usedNet) / float64(totalNet) * 100
 							if netUsagePercent > 90 {
-								availableNetMbits := int((totalNet - usedNet) * 8 / (1000 * 1000)) // байты/сек → мегабиты/сек
+								// Используем правильное преобразование: байты/сек → мегабиты/сек
+								availableNetBytes := totalNet - usedNet
+								availableNetMbits := int(float64(availableNetBytes) * 8 / (1024 * 1024)) // байты/сек → мегабиты/сек
 								fmt.Printf("Network bandwidth usage high: %d Mbit/s available\n", availableNetMbits)
 							}
 						}
