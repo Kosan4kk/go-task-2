@@ -56,14 +56,14 @@ func main() {
 						
 						// 1. Load Average
 						if loadAvg > 30 {
-							fmt.Printf("Load Average is too high: %.2f\n", loadAvg)
+							fmt.Printf("Load Average is too high: %d\n", int(loadAvg))
 						}
 						
 						// 2. Memory usage
 						if totalMem > 0 {
 							memoryUsagePercent := float64(usedMem) / float64(totalMem) * 100
 							if memoryUsagePercent > 80 {
-								fmt.Printf("Memory usage too high: %.2f%%\n", memoryUsagePercent)
+								fmt.Printf("Memory usage too high: %d%%\n", int(memoryUsagePercent))
 							}
 						}
 						
@@ -71,8 +71,8 @@ func main() {
 						if totalDisk > 0 {
 							diskUsagePercent := float64(usedDisk) / float64(totalDisk) * 100
 							if diskUsagePercent > 90 {
-								freeDiskMB := float64(totalDisk-usedDisk) / (1024 * 1024)
-								fmt.Printf("Free disk space is too low: %.2f Mb left\n", freeDiskMB)
+								freeDiskMB := int((totalDisk - usedDisk) / (1024 * 1024))
+								fmt.Printf("Free disk space is too low: %d Mb left\n", freeDiskMB)
 							}
 						}
 						
@@ -80,8 +80,8 @@ func main() {
 						if totalNet > 0 {
 							netUsagePercent := float64(usedNet) / float64(totalNet) * 100
 							if netUsagePercent > 90 {
-								availableNetMbits := float64(totalNet-usedNet) * 8 / (1000 * 1000) // байты/сек → мегабиты/сек
-								fmt.Printf("Network bandwidth usage high: %.2f Mbit/s available\n", availableNetMbits)
+								availableNetMbits := int((totalNet - usedNet) * 8 / (1000 * 1000)) // байты/сек → мегабиты/сек
+								fmt.Printf("Network bandwidth usage high: %d Mbit/s available\n", availableNetMbits)
 							}
 						}
 					}
@@ -96,11 +96,10 @@ func main() {
 		// Проверяем количество ошибок
 		if errorCount >= 3 {
 			fmt.Println("Unable to fetch server statistic")
-			// Можно добавить break для выхода из цикла или продолжить с reset'ом счётчика
 			errorCount = 0 // сбрасываем после вывода сообщения
 		}
 		
-		// Ждём перед следующим запросом (например, 10 секунд)
+		// Ждём перед следующим запросом
 		time.Sleep(10 * time.Second)
 	}
 }
